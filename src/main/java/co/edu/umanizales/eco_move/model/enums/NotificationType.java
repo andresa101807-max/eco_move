@@ -1,0 +1,15 @@
+package co.edu.umanizales.eco_move.model.enums;
+
+public enum NotificationType {
+    RESERVATION_CONFIRMED,
+    RESERVATION_CANCELLED,
+    TRIP_STARTED,
+    TRIP_COMPLETED,
+    PAYMENT_SUCCESS,
+    PAYMENT_FAILED,
+    LOW_BATTERY,
+    MAINTENANCE_SCHEDULED,
+    MAINTENANCE_COMPLETED,
+    PROMOTION,
+    SYSTEM_ALERT
+}

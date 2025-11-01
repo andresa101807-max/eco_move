@@ -1,0 +1,2 @@
+# This file ensures the data directory is tracked by Git
+# CSV files will be generated automatically when the application runs
