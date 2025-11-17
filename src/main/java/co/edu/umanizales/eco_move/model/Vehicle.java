@@ -1,5 +1,8 @@
 package co.edu.umanizales.eco_move.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import co.edu.umanizales.eco_move.model.enums.VehicleStatus;
 import co.edu.umanizales.eco_move.model.enums.VehicleType;
 import co.edu.umanizales.eco_move.model.records.Coordinates;
@@ -21,6 +24,14 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", visible = true)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = ElectricBike.class, name = "ELECTRIC_BIKE"),
+        @JsonSubTypes.Type(value = ElectricScooter.class, name = "ELECTRIC_SCOOTER"),
+        @JsonSubTypes.Type(value = HybridCar.class, name = "HYBRID_CAR"),
+        @JsonSubTypes.Type(value = DeliveryDrone.class, name = "DELIVERY_DRONE")
+})
 public abstract class Vehicle {
     // Identificador único del vehículo
     protected String id;
