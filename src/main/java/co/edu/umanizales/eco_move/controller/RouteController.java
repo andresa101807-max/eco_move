@@ -31,27 +31,42 @@ public class RouteController {
     
     @PostMapping
     public ResponseEntity<Route> createRoute(@RequestBody Route route) {
+        if (!isValid(route)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
         Route created = routeService.create(route);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
     
     @PutMapping("/{id}")
     public ResponseEntity<Route> updateRoute(@PathVariable String id, @RequestBody Route route) {
-        try {
-            Route updated = routeService.update(id, route);
-            return ResponseEntity.ok(updated);
-        } catch (RuntimeException e) {
+        // Si la ruta no existe, 404
+        if (routeService.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         }
+        // Validación simple de datos
+        if (!isValid(route)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        Route updated = routeService.update(id, route);
+        return ResponseEntity.ok(updated);
     }
     
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteRoute(@PathVariable String id) {
-        try {
-            routeService.delete(id);
-            return ResponseEntity.noContent().build();
-        } catch (RuntimeException e) {
+        if (routeService.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         }
+        routeService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    // Validación muy básica: nombre y puntos de inicio/fin obligatorios
+    private boolean isValid(Route route) {
+        if (route == null) return false;
+        if (route.getName() == null || route.getName().isBlank()) return false;
+        if (route.getStartPoint() == null) return false;
+        if (route.getEndPoint() == null) return false;
+        return true;
     }
 }

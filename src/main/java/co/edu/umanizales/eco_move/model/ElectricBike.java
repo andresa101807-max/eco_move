@@ -1,13 +1,12 @@
 package co.edu.umanizales.eco_move.model;
 
 import co.edu.umanizales.eco_move.model.enums.VehicleType;
-import co.edu.umanizales.eco_move.model.interfaces.Rechargeable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ElectricBike extends Vehicle implements Rechargeable {
+public class ElectricBike extends Vehicle {
     private int gears;
     private boolean hasLights;
     private double weight;
@@ -42,27 +41,5 @@ public class ElectricBike extends Vehicle implements Rechargeable {
             return 0.0;
         }
         return (battery.getCurrentCharge() / battery.getCapacity()) * 50; // 50 km max range
-    }
-    
-    @Override
-    public void charge(double amount) {
-        if (battery != null) {
-            battery.charge(amount);
-        }
-    }
-    
-    @Override
-    public double getBatteryLevel() {
-        return battery != null ? battery.getCurrentCharge() : 0.0;
-    }
-    
-    @Override
-    public double getMaxBatteryCapacity() {
-        return battery != null ? battery.getCapacity() : 0.0;
-    }
-    
-    @Override
-    public boolean needsCharging() {
-        return battery != null && battery.getChargePercentage() < 20;
     }
 }

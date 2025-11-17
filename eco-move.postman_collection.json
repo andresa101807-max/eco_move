@@ -1,0 +1,214 @@
+{
+  "info": {
+    "_postman_id": "a6f8f3b0-2f9c-4e4b-9d4a-eco-move-collection",
+    "name": "Eco Move API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Postman collection for Eco Move API endpoints. Use the {{baseUrl}} variable to point to your server."
+  },
+  "item": [
+    {
+      "name": "Vehicles",
+      "item": [
+        {
+          "name": "Get all vehicles",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/vehicles",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "vehicles"]
+            }
+          }
+        },
+        {
+          "name": "Get vehicle by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/vehicles/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "vehicles", ":id"],
+              "variable": [{"key": "id", "value": "<vehicle-id>"}]
+            }
+          }
+        },
+        {
+          "name": "Get available vehicles",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/vehicles/available",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "vehicles", "available"]
+            }
+          }
+        },
+        {
+          "name": "Create vehicle (Electric Bike example)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"City Bike\",\n  \"model\": \"CB-100\",\n  \"brand\": \"EcoBrand\",\n  \"type\": \"ELECTRIC_BIKE\",\n  \"status\": \"AVAILABLE\",\n  \"pricePerHour\": 5.0,\n  \"currentLocation\": { \"latitude\": 5.0703, \"longitude\": -75.5138 },\n  \"battery\": { \"capacity\": 500, \"currentCharge\": 500, \"chargeCycles\": 0, \"maxChargeCycles\": 1000 },\n  \"gears\": 6,\n  \"hasLights\": true,\n  \"weight\": 18.5\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/vehicles",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "vehicles"]
+            }
+          }
+        },
+        {
+          "name": "Update vehicle",
+          "request": {
+            "method": "PUT",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"City Bike Pro\",\n  \"model\": \"CB-200\",\n  \"brand\": \"EcoBrand\",\n  \"type\": \"ELECTRIC_BIKE\",\n  \"status\": \"AVAILABLE\",\n  \"pricePerHour\": 6.0,\n  \"currentLocation\": { \"latitude\": 5.0703, \"longitude\": -75.5138 },\n  \"battery\": { \"capacity\": 500, \"currentCharge\": 400, \"chargeCycles\": 10, \"maxChargeCycles\": 1000 },\n  \"gears\": 7,\n  \"hasLights\": true,\n  \"weight\": 18.0\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/vehicles/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "vehicles", ":id"],
+              "variable": [{"key": "id", "value": "<vehicle-id>"}]
+            }
+          }
+        },
+        {
+          "name": "Delete vehicle",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/vehicles/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "vehicles", ":id"],
+              "variable": [{"key": "id", "value": "<vehicle-id>"}]
+            }
+          }
+        },
+        {
+          "name": "Update vehicle status",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/vehicles/:id/status?status=IN_USE",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "vehicles", ":id", "status"],
+              "query": [{"key": "status", "value": "IN_USE"}],
+              "variable": [{"key": "id", "value": "<vehicle-id>"}]
+            }
+          }
+        },
+        {
+          "name": "Send vehicle to maintenance",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/vehicles/:id/maintenance",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "vehicles", ":id", "maintenance"],
+              "variable": [{"key": "id", "value": "<vehicle-id>"}]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get all users",
+          "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/users", "host": ["{{baseUrl}}"], "path": ["api", "users"]}}
+        },
+        {
+          "name": "Get user by ID",
+          "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/users/:id", "host": ["{{baseUrl}}"], "path": ["api", "users", ":id"], "variable": [{"key": "id", "value": "<user-id>"}]}}
+        },
+        {
+          "name": "Create user",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Juan Perez\",\n  \"email\": \"juan@example.com\",\n  \"phoneNumber\": \"3001234567\",\n  \"dateOfBirth\": \"1995-05-10\",\n  \"documentNumber\": \"12345678\",\n  \"userType\": \"REGULAR\",\n  \"balance\": 0,\n  \"active\": true,\n  \"tripHistory\": \"\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/api/users", "host": ["{{baseUrl}}"], "path": ["api", "users"]}
+          }
+        },
+        {
+          "name": "Update user",
+          "request": {
+            "method": "PUT",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\n  \"name\": \"Juan Actualizado\",\n  \"email\": \"juan@example.com\",\n  \"phoneNumber\": \"3001234567\",\n  \"dateOfBirth\": \"1995-05-10\",\n  \"documentNumber\": \"12345678\",\n  \"userType\": \"PREMIUM\",\n  \"balance\": 10,\n  \"active\": true,\n  \"tripHistory\": \"\"\n}"},
+            "url": {"raw": "{{baseUrl}}/api/users/:id", "host": ["{{baseUrl}}"], "path": ["api", "users", ":id"], "variable": [{"key": "id", "value": "<user-id>"}]}
+          }
+        },
+        {
+          "name": "Delete user",
+          "request": {"method": "DELETE", "url": {"raw": "{{baseUrl}}/api/users/:id", "host": ["{{baseUrl}}"], "path": ["api", "users", ":id"], "variable": [{"key": "id", "value": "<user-id>"}]}}
+        },
+        {
+          "name": "Add balance",
+          "request": {"method": "POST", "url": {"raw": "{{baseUrl}}/api/users/:id/balance/add?amount=20", "host": ["{{baseUrl}}"], "path": ["api", "users", ":id", "balance", "add"], "query": [{"key": "amount", "value": "20"}], "variable": [{"key": "id", "value": "<user-id>"}]}}
+        },
+        {
+          "name": "Deduct balance",
+          "request": {"method": "POST", "url": {"raw": "{{baseUrl}}/api/users/:id/balance/deduct?amount=5", "host": ["{{baseUrl}}"], "path": ["api", "users", ":id", "balance", "deduct"], "query": [{"key": "amount", "value": "5"}], "variable": [{"key": "id", "value": "<user-id>"}]}}
+        }
+      ]
+    },
+    {
+      "name": "Routes",
+      "item": [
+        {"name": "Get all routes", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/routes", "host": ["{{baseUrl}}"], "path": ["api", "routes"]}}},
+        {"name": "Get route by ID", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/routes/:id", "host": ["{{baseUrl}}"], "path": ["api", "routes", ":id"], "variable": [{"key": "id", "value": "<route-id>"}]}}},
+        {"name": "Create route", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"name\": \"Campus Loop\",\n  \"description\": \"Ruta corta por el campus\",\n  \"startPoint\": { \"latitude\": 5.0700, \"longitude\": -75.5140 },\n  \"endPoint\": { \"latitude\": 5.0720, \"longitude\": -75.5120 },\n  \"difficulty\": \"easy\",\n  \"waypoints\": []\n}"}, "url": {"raw": "{{baseUrl}}/api/routes", "host": ["{{baseUrl}}"], "path": ["api", "routes"]}}},
+        {"name": "Update route", "request": {"method": "PUT", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"name\": \"Campus Loop Ext\",\n  \"description\": \"Ruta extendida\",\n  \"startPoint\": { \"latitude\": 5.0700, \"longitude\": -75.5140 },\n  \"endPoint\": { \"latitude\": 5.0740, \"longitude\": -75.5100 },\n  \"difficulty\": \"medium\",\n  \"waypoints\": []\n}"}, "url": {"raw": "{{baseUrl}}/api/routes/:id", "host": ["{{baseUrl}}"], "path": ["api", "routes", ":id"], "variable": [{"key": "id", "value": "<route-id>"}]}}},
+        {"name": "Delete route", "request": {"method": "DELETE", "url": {"raw": "{{baseUrl}}/api/routes/:id", "host": ["{{baseUrl}}"], "path": ["api", "routes", ":id"], "variable": [{"key": "id", "value": "<route-id>"}]}}}
+      ]
+    },
+    {
+      "name": "Maintenances",
+      "item": [
+        {"name": "Get all maintenances", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/maintenances", "host": ["{{baseUrl}}"], "path": ["api", "maintenances"]}}},
+        {"name": "Get maintenance by ID", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/maintenances/:id", "host": ["{{baseUrl}}"], "path": ["api", "maintenances", ":id"], "variable": [{"key": "id", "value": "<maintenance-id>"}]}}},
+        {"name": "Create maintenance", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"vehicleId\": \"<vehicle-id>\",\n  \"description\": \"Cambio de frenos\",\n  \"scheduledDate\": \"2025-11-20T10:00:00\"\n}"}, "url": {"raw": "{{baseUrl}}/api/maintenances", "host": ["{{baseUrl}}"], "path": ["api", "maintenances"]}}},
+        {"name": "Update maintenance", "request": {"method": "PUT", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"vehicleId\": \"<vehicle-id>\",\n  \"description\": \"Cambio de frenos y cadena\",\n  \"scheduledDate\": \"2025-11-21T10:00:00\"\n}"}, "url": {"raw": "{{baseUrl}}/api/maintenances/:id", "host": ["{{baseUrl}}"], "path": ["api", "maintenances", ":id"], "variable": [{"key": "id", "value": "<maintenance-id>"}]}}},
+        {"name": "Delete maintenance", "request": {"method": "DELETE", "url": {"raw": "{{baseUrl}}/api/maintenances/:id", "host": ["{{baseUrl}}"], "path": ["api", "maintenances", ":id"], "variable": [{"key": "id", "value": "<maintenance-id>"}]}}},
+        {"name": "Complete maintenance", "request": {"method": "POST", "url": {"raw": "{{baseUrl}}/api/maintenances/:id/complete?cost=50", "host": ["{{baseUrl}}"], "path": ["api", "maintenances", ":id", "complete"], "query": [{"key": "cost", "value": "50"}], "variable": [{"key": "id", "value": "<maintenance-id>"}]}}},
+        {"name": "Reschedule maintenance", "request": {"method": "POST", "url": {"raw": "{{baseUrl}}/api/maintenances/:id/reschedule?newDate=2025-11-21T12:00:00", "host": ["{{baseUrl}}"], "path": ["api", "maintenances", ":id", "reschedule"], "query": [{"key": "newDate", "value": "2025-11-21T12:00:00"}], "variable": [{"key": "id", "value": "<maintenance-id>"}]}}}
+      ]
+    },
+    {
+      "name": "Reservations",
+      "item": [
+        {"name": "Get all reservations", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/reservations", "host": ["{{baseUrl}}"], "path": ["api", "reservations"]}}},
+        {"name": "Get reservation by ID", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/reservations/:id", "host": ["{{baseUrl}}"], "path": ["api", "reservations", ":id"], "variable": [{"key": "id", "value": "<reservation-id>"}]}}},
+        {"name": "Create reservation", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"userId\": \"<user-id>\",\n  \"vehicleId\": \"<vehicle-id>\",\n  \"startTime\": \"2025-11-20T09:00:00\",\n  \"endTime\": \"2025-11-20T10:00:00\"\n}"}, "url": {"raw": "{{baseUrl}}/api/reservations", "host": ["{{baseUrl}}"], "path": ["api", "reservations"]}}},
+        {"name": "Update reservation", "request": {"method": "PUT", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"userId\": \"<user-id>\",\n  \"vehicleId\": \"<vehicle-id>\",\n  \"startTime\": \"2025-11-20T09:30:00\",\n  \"endTime\": \"2025-11-20T10:30:00\"\n}"}, "url": {"raw": "{{baseUrl}}/api/reservations/:id", "host": ["{{baseUrl}}"], "path": ["api", "reservations", ":id"], "variable": [{"key": "id", "value": "<reservation-id>"}]}}},
+        {"name": "Delete reservation", "request": {"method": "DELETE", "url": {"raw": "{{baseUrl}}/api/reservations/:id", "host": ["{{baseUrl}}"], "path": ["api", "reservations", ":id"], "variable": [{"key": "id", "value": "<reservation-id>"}]}}},
+        {"name": "Confirm reservation", "request": {"method": "POST", "url": {"raw": "{{baseUrl}}/api/reservations/:id/confirm", "host": ["{{baseUrl}}"], "path": ["api", "reservations", ":id", "confirm"], "variable": [{"key": "id", "value": "<reservation-id>"}]}}},
+        {"name": "Start reservation", "request": {"method": "POST", "url": {"raw": "{{baseUrl}}/api/reservations/:id/start", "host": ["{{baseUrl}}"], "path": ["api", "reservations", ":id", "start"], "variable": [{"key": "id", "value": "<reservation-id>"}]}}},
+        {"name": "Complete reservation", "request": {"method": "POST", "url": {"raw": "{{baseUrl}}/api/reservations/:id/complete?cost=8.5", "host": ["{{baseUrl}}"], "path": ["api", "reservations", ":id", "complete"], "query": [{"key": "cost", "value": "8.5"}], "variable": [{"key": "id", "value": "<reservation-id>"}]}}},
+        {"name": "Cancel reservation", "request": {"method": "POST", "url": {"raw": "{{baseUrl}}/api/reservations/:id/cancel", "host": ["{{baseUrl}}"], "path": ["api", "reservations", ":id", "cancel"], "variable": [{"key": "id", "value": "<reservation-id>"}]}}}
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ]
+}
