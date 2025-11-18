@@ -1,0 +1,132 @@
+{
+  "info": {
+    "_postman_id": "9b2c3de4-5f67-4a89-b111-eco-move-full-tests",
+    "name": "Eco Move API - Full Tests",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "End-to-end collection to test all API endpoints with chained variables. Use with eco-move.postman_environment.json."
+  },
+  "item": [
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Create user",
+          "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": [
+            "pm.test('201 Created', ()=> pm.response.to.have.status(201));",
+            "const body = pm.response.json();",
+            "pm.environment.set('userId', body.id);"
+          ]}}],
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\n  \"name\": \"E2E User\",\n  \"email\": \"e2e@example.com\",\n  \"phoneNumber\": \"3001112233\",\n  \"dateOfBirth\": \"1992-02-02\",\n  \"documentNumber\": \"E2E-USER-1\",\n  \"userType\": \"REGULAR\",\n  \"balance\": 0,\n  \"active\": true,\n  \"tripHistory\": \"\"\n}"},
+            "url": {"raw": "{{baseUrl}}/api/users", "host": ["{{baseUrl}}"], "path": ["api","users"]}
+          }
+        },
+        {"name": "Get user", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/users/{{userId}}", "host": ["{{baseUrl}}"], "path": ["api","users","{{userId}}"]}}},
+        {"name": "Add balance", "request": {"method": "POST", "url": {"raw": "{{baseUrl}}/api/users/{{userId}}/balance/add?amount=25", "host": ["{{baseUrl}}"], "path": ["api","users","{{userId}}","balance","add"], "query": [{"key": "amount", "value": "25"}]}}}
+      ]
+    },
+    {
+      "name": "Vehicles",
+      "item": [
+        {
+          "name": "Create electric bike",
+          "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": [
+            "pm.test('201 Created', ()=> pm.response.to.have.status(201));",
+            "pm.environment.set('vehicleBikeId', pm.response.json().id);"
+          ]}}],
+          "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"name\": \"FT Bike\",\n  \"model\": \"FT-B1\",\n  \"brand\": \"Eco\",\n  \"type\": \"ELECTRIC_BIKE\",\n  \"status\": \"AVAILABLE\",\n  \"pricePerHour\": 4.0,\n  \"currentLocation\": { \"latitude\": 5.07, \"longitude\": -75.51 },\n  \"battery\": { \"capacity\": 500, \"currentCharge\": 500, \"chargeCycles\": 0, \"maxChargeCycles\": 1000 },\n  \"gears\": 6,\n  \"hasLights\": true,\n  \"weight\": 18.0\n}"}, "url": {"raw": "{{baseUrl}}/api/vehicles", "host": ["{{baseUrl}}"], "path": ["api","vehicles"]}}
+        },
+        {
+          "name": "Create electric scooter",
+          "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": [
+            "pm.test('201 Created', ()=> pm.response.to.have.status(201));",
+            "pm.environment.set('vehicleScooterId', pm.response.json().id);"
+          ]}}],
+          "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"name\": \"FT Scooter\",\n  \"model\": \"FT-S1\",\n  \"brand\": \"Eco\",\n  \"type\": \"ELECTRIC_SCOOTER\",\n  \"status\": \"AVAILABLE\",\n  \"pricePerHour\": 3.0,\n  \"currentLocation\": { \"latitude\": 5.071, \"longitude\": -75.512 },\n  \"battery\": { \"capacity\": 350, \"currentCharge\": 350, \"chargeCycles\": 0, \"maxChargeCycles\": 800 },\n  \"hasSuspension\": true,\n  \"maxLoad\": 100.0\n}"}, "url": {"raw": "{{baseUrl}}/api/vehicles", "host": ["{{baseUrl}}"], "path": ["api","vehicles"]}}
+        },
+        {
+          "name": "Create hybrid car",
+          "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": [
+            "pm.test('201 Created', ()=> pm.response.to.have.status(201));",
+            "pm.environment.set('vehicleCarId', pm.response.json().id);"
+          ]}}],
+          "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"name\": \"FT Car\",\n  \"model\": \"FT-C1\",\n  \"brand\": \"Eco\",\n  \"type\": \"HYBRID_CAR\",\n  \"status\": \"AVAILABLE\",\n  \"pricePerHour\": 12.0,\n  \"currentLocation\": { \"latitude\": 5.072, \"longitude\": -75.513 },\n  \"battery\": { \"capacity\": 1500, \"currentCharge\": 1500, \"chargeCycles\": 0, \"maxChargeCycles\": 2000 },\n  \"seats\": 4,\n  \"fuelCapacity\": 45.0,\n  \"currentFuel\": 45.0,\n  \"hasAirConditioning\": true\n}"}, "url": {"raw": "{{baseUrl}}/api/vehicles", "host": ["{{baseUrl}}"], "path": ["api","vehicles"]}}
+        },
+        {
+          "name": "Create delivery drone",
+          "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": [
+            "pm.test('201 Created', ()=> pm.response.to.have.status(201));",
+            "pm.environment.set('vehicleDroneId', pm.response.json().id);"
+          ]}}],
+          "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"name\": \"FT Drone\",\n  \"model\": \"FT-D1\",\n  \"brand\": \"Eco\",\n  \"type\": \"DELIVERY_DRONE\",\n  \"status\": \"AVAILABLE\",\n  \"pricePerHour\": 20.0,\n  \"currentLocation\": { \"latitude\": 5.073, \"longitude\": -75.514 },\n  \"battery\": { \"capacity\": 200, \"currentCharge\": 200, \"chargeCycles\": 0, \"maxChargeCycles\": 500 },\n  \"maxPayload\": 2.0,\n  \"maxAltitude\": 120.0,\n  \"autoPilotEnabled\": false\n}"}, "url": {"raw": "{{baseUrl}}/api/vehicles", "host": ["{{baseUrl}}"], "path": ["api","vehicles"]}}
+        },
+        {"name": "Get available vehicles", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/vehicles/available", "host": ["{{baseUrl}}"], "path": ["api","vehicles","available"]}}},
+        {"name": "Update status (bike -> IN_USE)", "request": {"method": "PATCH", "url": {"raw": "{{baseUrl}}/api/vehicles/{{vehicleBikeId}}/status?status=IN_USE", "host": ["{{baseUrl}}"], "path": ["api","vehicles","{{vehicleBikeId}}","status"], "query": [{"key":"status","value":"IN_USE"}]}}},
+        {"name": "Send scooter to maintenance", "request": {"method": "POST", "url": {"raw": "{{baseUrl}}/api/vehicles/{{vehicleScooterId}}/maintenance", "host": ["{{baseUrl}}"], "path": ["api","vehicles","{{vehicleScooterId}}","maintenance"]}}}
+      ]
+    },
+    {
+      "name": "Maintenances",
+      "item": [
+        {
+          "name": "Create maintenance (scooter)",
+          "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": [
+            "pm.test('201 Created', ()=> pm.response.to.have.status(201));",
+            "pm.environment.set('maintenanceId', pm.response.json().id);"
+          ]}}],
+          "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"vehicleId\": \"{{vehicleScooterId}}\",\n  \"description\": \"Cambio de frenos\",\n  \"scheduledDate\": \"2025-11-21T10:00:00\"\n}"}, "url": {"raw": "{{baseUrl}}/api/maintenances", "host": ["{{baseUrl}}"], "path": ["api","maintenances"]}}
+        },
+        {"name": "Reschedule maintenance", "request": {"method": "POST", "url": {"raw": "{{baseUrl}}/api/maintenances/{{maintenanceId}}/reschedule?newDate=2025-11-22T09:00:00", "host": ["{{baseUrl}}"], "path": ["api","maintenances","{{maintenanceId}}","reschedule"], "query": [{"key":"newDate","value":"2025-11-22T09:00:00"}]}}},
+        {"name": "Complete maintenance", "request": {"method": "POST", "url": {"raw": "{{baseUrl}}/api/maintenances/{{maintenanceId}}/complete?cost=60", "host": ["{{baseUrl}}"], "path": ["api","maintenances","{{maintenanceId}}","complete"], "query": [{"key":"cost","value":"60"}]}}}
+      ]
+    },
+    {
+      "name": "Routes",
+      "item": [
+        {
+          "name": "Create route",
+          "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": [
+            "pm.test('201 Created', ()=> pm.response.to.have.status(201));",
+            "pm.environment.set('routeId', pm.response.json().id);"
+          ]}}],
+          "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"name\": \"FT Route\",\n  \"description\": \"Ruta end-to-end\",\n  \"startPoint\": { \"latitude\": 5.0700, \"longitude\": -75.5140 },\n  \"endPoint\": { \"latitude\": 5.0720, \"longitude\": -75.5120 },\n  \"difficulty\": \"easy\",\n  \"waypoints\": []\n}"}, "url": {"raw": "{{baseUrl}}/api/routes", "host": ["{{baseUrl}}"], "path": ["api","routes"]}}
+        },
+        {"name": "Get route", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/routes/{{routeId}}", "host": ["{{baseUrl}}"], "path": ["api","routes","{{routeId}}"]}}}
+      ]
+    },
+    {
+      "name": "Reservations",
+      "item": [
+        {
+          "name": "Create reservation (user + bike)",
+          "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": [
+            "pm.test('201 Created', ()=> pm.response.to.have.status(201));",
+            "pm.environment.set('reservationId', pm.response.json().id);"
+          ]}}],
+          "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"vehicleId\": \"{{vehicleBikeId}}\",\n  \"startTime\": \"2025-11-21T09:00:00\",\n  \"endTime\": \"2025-11-21T10:00:00\"\n}"}, "url": {"raw": "{{baseUrl}}/api/reservations", "host": ["{{baseUrl}}"], "path": ["api","reservations"]}}
+        },
+        {"name": "Confirm reservation", "request": {"method": "POST", "url": {"raw": "{{baseUrl}}/api/reservations/{{reservationId}}/confirm", "host": ["{{baseUrl}}"], "path": ["api","reservations","{{reservationId}}","confirm"]}}},
+        {"name": "Start reservation", "request": {"method": "POST", "url": {"raw": "{{baseUrl}}/api/reservations/{{reservationId}}/start", "host": ["{{baseUrl}}"], "path": ["api","reservations","{{reservationId}}","start"]}}},
+        {"name": "Complete reservation (cost=9.5)", "request": {"method": "POST", "url": {"raw": "{{baseUrl}}/api/reservations/{{reservationId}}/complete?cost=9.5", "host": ["{{baseUrl}}"], "path": ["api","reservations","{{reservationId}}","complete"], "query": [{"key":"cost","value":"9.5"}]}}}
+      ]
+    },
+    {
+      "name": "Cleanup",
+      "item": [
+        {"name": "Delete reservation", "request": {"method": "DELETE", "url": {"raw": "{{baseUrl}}/api/reservations/{{reservationId}}", "host": ["{{baseUrl}}"], "path": ["api","reservations","{{reservationId}}"]}}},
+        {"name": "Delete maintenance", "request": {"method": "DELETE", "url": {"raw": "{{baseUrl}}/api/maintenances/{{maintenanceId}}", "host": ["{{baseUrl}}"], "path": ["api","maintenances","{{maintenanceId}}"]}}},
+        {"name": "Delete vehicles", "request": {"method": "DELETE", "url": {"raw": "{{baseUrl}}/api/vehicles/{{vehicleBikeId}}", "host": ["{{baseUrl}}"], "path": ["api","vehicles","{{vehicleBikeId}}"]}}},
+        {"name": "Delete vehicles (scooter)", "request": {"method": "DELETE", "url": {"raw": "{{baseUrl}}/api/vehicles/{{vehicleScooterId}}", "host": ["{{baseUrl}}"], "path": ["api","vehicles","{{vehicleScooterId}}"]}}},
+        {"name": "Delete vehicles (car)", "request": {"method": "DELETE", "url": {"raw": "{{baseUrl}}/api/vehicles/{{vehicleCarId}}", "host": ["{{baseUrl}}"], "path": ["api","vehicles","{{vehicleCarId}}"]}}},
+        {"name": "Delete vehicles (drone)", "request": {"method": "DELETE", "url": {"raw": "{{baseUrl}}/api/vehicles/{{vehicleDroneId}}", "host": ["{{baseUrl}}"], "path": ["api","vehicles","{{vehicleDroneId}}"]}}},
+        {"name": "Delete route", "request": {"method": "DELETE", "url": {"raw": "{{baseUrl}}/api/routes/{{routeId}}", "host": ["{{baseUrl}}"], "path": ["api","routes","{{routeId}}"]}}},
+        {"name": "Delete user", "request": {"method": "DELETE", "url": {"raw": "{{baseUrl}}/api/users/{{userId}}", "host": ["{{baseUrl}}"], "path": ["api","users","{{userId}}"]}}}
+      ]
+    }
+  ],
+  "variable": [
+    {"key": "baseUrl", "value": "http://localhost:8080", "type": "string"}
+  ]
+}
