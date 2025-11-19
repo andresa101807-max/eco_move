@@ -7,6 +7,23 @@
   },
   "item": [
     {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Healthcheck",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "health"]
+            }
+          }
+        }
+      ]
+    },
+    {
       "name": "Vehicles",
       "item": [
         {
@@ -30,18 +47,6 @@
               "raw": "{{baseUrl}}/api/vehicles/{{vehicleId}}",
               "host": ["{{baseUrl}}"],
               "path": ["api", "vehicles", "{{vehicleId}}"]
-            }
-          }
-        },
-        {
-          "name": "Get available vehicles",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/vehicles/available",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "vehicles", "available"]
             }
           }
         },
@@ -101,31 +106,6 @@
               "path": ["api", "vehicles", "{{vehicleId}}"]
             }
           }
-        },
-        {
-          "name": "Update vehicle status",
-          "request": {
-            "method": "PATCH",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/vehicles/{{vehicleId}}/status?status=IN_USE",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "vehicles", "{{vehicleId}}", "status"],
-              "query": [{"key": "status", "value": "IN_USE"}]
-            }
-          }
-        },
-        {
-          "name": "Send vehicle to maintenance",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/vehicles/{{vehicleId}}/maintenance",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "vehicles", "{{vehicleId}}", "maintenance"]
-            }
-          }
         }
       ]
     },
@@ -177,14 +157,6 @@
         {
           "name": "Delete user",
           "request": {"method": "DELETE", "url": {"raw": "{{baseUrl}}/api/users/{{userId}}", "host": ["{{baseUrl}}"], "path": ["api", "users", "{{userId}}"]}}
-        },
-        {
-          "name": "Add balance",
-          "request": {"method": "POST", "url": {"raw": "{{baseUrl}}/api/users/{{userId}}/balance/add?amount=20", "host": ["{{baseUrl}}"], "path": ["api", "users", "{{userId}}", "balance", "add"], "query": [{"key": "amount", "value": "20"}]}}
-        },
-        {
-          "name": "Deduct balance",
-          "request": {"method": "POST", "url": {"raw": "{{baseUrl}}/api/users/{{userId}}/balance/deduct?amount=5", "host": ["{{baseUrl}}"], "path": ["api", "users", "{{userId}}", "balance", "deduct"], "query": [{"key": "amount", "value": "5"}]}}
         }
       ]
     },
@@ -196,32 +168,6 @@
         {"name": "Create route", "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": ["pm.test('201 Created', ()=> pm.response.to.have.status(201));","pm.environment.set('routeId', pm.response.json().id);"]}}], "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"name\": \"Campus Loop\",\n  \"description\": \"Ruta corta por el campus\",\n  \"startPoint\": { \"latitude\": 5.0700, \"longitude\": -75.5140 },\n  \"endPoint\": { \"latitude\": 5.0720, \"longitude\": -75.5120 },\n  \"difficulty\": \"easy\",\n  \"waypoints\": []\n}"}, "url": {"raw": "{{baseUrl}}/api/routes", "host": ["{{baseUrl}}"], "path": ["api", "routes"]}}},
         {"name": "Update route", "request": {"method": "PUT", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"name\": \"Campus Loop Ext\",\n  \"description\": \"Ruta extendida\",\n  \"startPoint\": { \"latitude\": 5.0700, \"longitude\": -75.5140 },\n  \"endPoint\": { \"latitude\": 5.0740, \"longitude\": -75.5100 },\n  \"difficulty\": \"medium\",\n  \"waypoints\": []\n}"}, "url": {"raw": "{{baseUrl}}/api/routes/{{routeId}}", "host": ["{{baseUrl}}"], "path": ["api", "routes", "{{routeId}}"]}}},
         {"name": "Delete route", "request": {"method": "DELETE", "url": {"raw": "{{baseUrl}}/api/routes/{{routeId}}", "host": ["{{baseUrl}}"], "path": ["api", "routes", "{{routeId}}"]}}}
-      ]
-    },
-    {
-      "name": "Maintenances",
-      "item": [
-        {"name": "Get all maintenances", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/maintenances", "host": ["{{baseUrl}}"], "path": ["api", "maintenances"]}}},
-        {"name": "Get maintenance by ID", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/maintenances/{{maintenanceId}}", "host": ["{{baseUrl}}"], "path": ["api", "maintenances", "{{maintenanceId}}"]}}},
-        {"name": "Create maintenance", "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": ["pm.test('201 Created', ()=> pm.response.to.have.status(201));","pm.environment.set('maintenanceId', pm.response.json().id);"]}}], "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"vehicleId\": \"{{vehicleId}}\",\n  \"description\": \"Cambio de frenos\",\n  \"scheduledDate\": \"2025-11-20T10:00:00\"\n}"}, "url": {"raw": "{{baseUrl}}/api/maintenances", "host": ["{{baseUrl}}"], "path": ["api", "maintenances"]}}},
-        {"name": "Update maintenance", "request": {"method": "PUT", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"vehicleId\": \"{{vehicleId}}\",\n  \"description\": \"Cambio de frenos y cadena\",\n  \"scheduledDate\": \"2025-11-21T10:00:00\"\n}"}, "url": {"raw": "{{baseUrl}}/api/maintenances/{{maintenanceId}}", "host": ["{{baseUrl}}"], "path": ["api", "maintenances", "{{maintenanceId}}"]}}},
-        {"name": "Delete maintenance", "request": {"method": "DELETE", "url": {"raw": "{{baseUrl}}/api/maintenances/{{maintenanceId}}", "host": ["{{baseUrl}}"], "path": ["api", "maintenances", "{{maintenanceId}}"]}}},
-        {"name": "Complete maintenance", "request": {"method": "POST", "url": {"raw": "{{baseUrl}}/api/maintenances/{{maintenanceId}}/complete?cost=50", "host": ["{{baseUrl}}"], "path": ["api", "maintenances", "{{maintenanceId}}", "complete"], "query": [{"key": "cost", "value": "50"}]}}},
-        {"name": "Reschedule maintenance", "request": {"method": "POST", "url": {"raw": "{{baseUrl}}/api/maintenances/{{maintenanceId}}/reschedule?newDate=2025-11-21T12:00:00", "host": ["{{baseUrl}}"], "path": ["api", "maintenances", "{{maintenanceId}}", "reschedule"], "query": [{"key": "newDate", "value": "2025-11-21T12:00:00"}]}}}
-      ]
-    },
-    {
-      "name": "Reservations",
-      "item": [
-        {"name": "Get all reservations", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/reservations", "host": ["{{baseUrl}}"], "path": ["api", "reservations"]}}},
-        {"name": "Get reservation by ID", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/reservations/{{reservationId}}", "host": ["{{baseUrl}}"], "path": ["api", "reservations", "{{reservationId}}"]}}},
-        {"name": "Create reservation", "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": ["pm.test('201 Created', ()=> pm.response.to.have.status(201));","pm.environment.set('reservationId', pm.response.json().id);"]}}], "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"vehicleId\": \"{{vehicleId}}\",\n  \"startTime\": \"2025-11-20T09:00:00\",\n  \"endTime\": \"2025-11-20T10:00:00\"\n}"}, "url": {"raw": "{{baseUrl}}/api/reservations", "host": ["{{baseUrl}}"], "path": ["api", "reservations"]}}},
-        {"name": "Update reservation", "request": {"method": "PUT", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"vehicleId\": \"{{vehicleId}}\",\n  \"startTime\": \"2025-11-20T09:30:00\",\n  \"endTime\": \"2025-11-20T10:30:00\"\n}"}, "url": {"raw": "{{baseUrl}}/api/reservations/{{reservationId}}", "host": ["{{baseUrl}}"], "path": ["api", "reservations", "{{reservationId}}"]}}},
-        {"name": "Delete reservation", "request": {"method": "DELETE", "url": {"raw": "{{baseUrl}}/api/reservations/{{reservationId}}", "host": ["{{baseUrl}}"], "path": ["api", "reservations", "{{reservationId}}"]}}},
-        {"name": "Confirm reservation", "request": {"method": "POST", "url": {"raw": "{{baseUrl}}/api/reservations/{{reservationId}}/confirm", "host": ["{{baseUrl}}"], "path": ["api", "reservations", "{{reservationId}}", "confirm"]}}},
-        {"name": "Start reservation", "request": {"method": "POST", "url": {"raw": "{{baseUrl}}/api/reservations/{{reservationId}}/start", "host": ["{{baseUrl}}"], "path": ["api", "reservations", "{{reservationId}}", "start"]}}},
-        {"name": "Complete reservation", "request": {"method": "POST", "url": {"raw": "{{baseUrl}}/api/reservations/{{reservationId}}/complete?cost=8.5", "host": ["{{baseUrl}}"], "path": ["api", "reservations", "{{reservationId}}", "complete"], "query": [{"key": "cost", "value": "8.5"}]}}},
-        {"name": "Cancel reservation", "request": {"method": "POST", "url": {"raw": "{{baseUrl}}/api/reservations/{{reservationId}}/cancel", "host": ["{{baseUrl}}"], "path": ["api", "reservations", "{{reservationId}}", "cancel"]}}}
       ]
     }
   ],
