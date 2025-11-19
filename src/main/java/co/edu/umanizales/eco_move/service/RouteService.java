@@ -6,39 +6,36 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class RouteService {
-    private final RouteCsvRepository repository;
-    
-    public RouteService(RouteCsvRepository repository) {
-        this.repository = repository;
+    private final RouteCsvRepository routeRepository;
+
+    public RouteService(RouteCsvRepository routeRepository) {
+        this.routeRepository = routeRepository;
     }
-    
+
     public List<Route> findAll() {
-        return repository.findAll();
+        return routeRepository.findAll();
     }
-    
+
     public Optional<Route> findById(String id) {
-        return repository.findById(id);
+        return routeRepository.findById(id);
     }
-    
+
     public Route create(Route route) {
-        return repository.save(route);
-    }
-    
-    public Route update(String id, Route route) {
-        if (!repository.existsById(id)) {
-            throw new RuntimeException("Route not found with id: " + id);
+        if (route.getId() == null || route.getId().isEmpty()) {
+            route.setId(UUID.randomUUID().toString());
         }
-        route.setId(id);
-        return repository.save(route);
+        return routeRepository.save(route);
     }
-    
+
+    public Route update(Route route) {
+        return routeRepository.save(route);
+    }
+
     public void delete(String id) {
-        if (!repository.existsById(id)) {
-            throw new RuntimeException("Route not found with id: " + id);
-        }
-        repository.deleteById(id);
+        routeRepository.deleteById(id);
     }
 }

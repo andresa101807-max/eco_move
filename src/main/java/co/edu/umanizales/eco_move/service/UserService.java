@@ -6,61 +6,36 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService {
-    private final UserCsvRepository repository;
-    
-    public UserService(UserCsvRepository repository) {
-        this.repository = repository;
+    private final UserCsvRepository userRepository;
+
+    public UserService(UserCsvRepository userRepository) {
+        this.userRepository = userRepository;
     }
-    
+
     public List<User> findAll() {
-        return repository.findAll();
+        return userRepository.findAll();
     }
-    
+
     public Optional<User> findById(String id) {
-        return repository.findById(id);
+        return userRepository.findById(id);
     }
-    
+
     public User create(User user) {
-        return repository.save(user);
-    }
-    
-    public User update(String id, User user) {
-        if (!repository.existsById(id)) {
-            throw new RuntimeException("User not found with id: " + id);
+        if (user.getId() == null || user.getId().isEmpty()) {
+            user.setId(UUID.randomUUID().toString());
         }
-        user.setId(id);
-        return repository.save(user);
+        return userRepository.save(user);
     }
-    
+
+    public User update(User user) {
+        return userRepository.save(user);
+    }
+
     public void delete(String id) {
-        if (!repository.existsById(id)) {
-            throw new RuntimeException("User not found with id: " + id);
-        }
-        repository.deleteById(id);
-    }
-    
-    public User addBalance(String id, double amount) {
-        if (amount <= 0) {
-            throw new IllegalArgumentException("Amount must be positive");
-        }
-        User user = findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
-        user.addBalance(amount);
-        return repository.save(user);
-    }
-    
-    public User deductBalance(String id, double amount) {
-        if (amount <= 0) {
-            throw new IllegalArgumentException("Amount must be positive");
-        }
-        User user = findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
-        if (!user.deductBalance(amount)) {
-            throw new RuntimeException("Insufficient balance");
-        }
-        return repository.save(user);
+        userRepository.deleteById(id);
     }
 }
