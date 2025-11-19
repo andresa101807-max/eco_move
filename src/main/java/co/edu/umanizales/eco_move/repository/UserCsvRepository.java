@@ -18,7 +18,6 @@ public class UserCsvRepository implements CsvRepository<User> {
     private static final String FILE_PATH = "data/users.csv";
     private static final String[] HEADER = {"id", "name", "email", "phoneNumber", "dateOfBirth", 
                                            "documentNumber", "userType", "balance", "isActive", "tripHistory"};
-    
     public UserCsvRepository() {
         initializeFile();
     }
@@ -85,7 +84,6 @@ public class UserCsvRepository implements CsvRepository<User> {
     private void saveAll(List<User> users) {
         try (CSVWriter writer = new CSVWriter(new FileWriter(FILE_PATH))) {
             writer.writeNext(HEADER);
-            
             for (User user : users) {
                 writer.writeNext(toStringArray(user));
             }
@@ -96,16 +94,28 @@ public class UserCsvRepository implements CsvRepository<User> {
     
     private User parseUser(String[] data) {
         User user = new User();
-        user.setId(data[0]);
-        user.setName(data[1]);
-        user.setEmail(data[2]);
-        user.setPhoneNumber(data[3]);
-        user.setDateOfBirth(LocalDate.parse(data[4]));
-        user.setDocumentNumber(data[5]);
-        user.setUserType(UserType.valueOf(data[6]));
-        user.setBalance(Double.parseDouble(data[7]));
-        user.setActive(Boolean.parseBoolean(data[8]));
-        user.setTripHistory(data[9].isEmpty() ? new TripHistory() : TripHistory.fromString(data[9]));
+        // Defensive checks for legacy rows with missing columns
+        String id = data.length > 0 ? data[0] : null;
+        String name = data.length > 1 ? data[1] : null;
+        String email = data.length > 2 ? data[2] : null;
+        String phone = data.length > 3 ? data[3] : null;
+        String dob = data.length > 4 ? data[4] : null;
+        String doc = data.length > 5 ? data[5] : null;
+        String type = data.length > 6 ? data[6] : null;
+        String balance = data.length > 7 ? data[7] : null;
+        String active = data.length > 8 ? data[8] : null;
+        String trips = data.length > 9 ? data[9] : "";
+        
+        if (id != null && !id.isEmpty()) user.setId(id);
+        if (name != null) user.setName(name);
+        if (email != null) user.setEmail(email);
+        if (phone != null) user.setPhoneNumber(phone);
+        if (dob != null && !dob.isEmpty()) user.setDateOfBirth(LocalDate.parse(dob));
+        if (doc != null) user.setDocumentNumber(doc);
+        if (type != null && !type.isEmpty()) user.setUserType(UserType.valueOf(type));
+        if (balance != null && !balance.isEmpty()) user.setBalance(Double.parseDouble(balance));
+        if (active != null && !active.isEmpty()) user.setActive(Boolean.parseBoolean(active));
+        user.setTripHistory(trips != null && !trips.isEmpty() ? TripHistory.fromString(trips) : new TripHistory());
         return user;
     }
     
@@ -115,9 +125,9 @@ public class UserCsvRepository implements CsvRepository<User> {
             user.getName(),
             user.getEmail(),
             user.getPhoneNumber(),
-            user.getDateOfBirth().toString(),
+            user.getDateOfBirth() != null ? user.getDateOfBirth().toString() : "",
             user.getDocumentNumber(),
-            user.getUserType().toString(),
+            user.getUserType() != null ? user.getUserType().toString() : "",
             String.valueOf(user.getBalance()),
             String.valueOf(user.isActive()),
             user.getTripHistory() != null ? user.getTripHistory().toString() : ""

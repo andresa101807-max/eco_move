@@ -4,6 +4,7 @@ import co.edu.umanizales.eco_move.model.enums.UserType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -11,22 +12,12 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
-    // Identificador único del usuario
-    private String id;
-    // Datos básicos de contacto
-    private String name;          // Nombre completo
-    private String email;         // Correo electrónico
-    private String phoneNumber;   // Número de teléfono
-    // Información adicional
-    private LocalDate dateOfBirth; // Fecha de nacimiento
-    private String documentNumber; // Documento de identidad
+@EqualsAndHashCode(callSuper = true)
+public class User extends Person {
     private UserType userType;     // Tipo de usuario (REGULAR, PREMIUM, ...)
-    // Estado y saldo para alquileres
     private double balance;        // Dinero disponible
     private boolean isActive;      // Si la cuenta está activa
-    // Historial de viajes realizados
-    private TripHistory tripHistory;
+    private TripHistory tripHistory; // Historial de viajes realizados
     
     /**
      * Constructor práctico para crear un usuario con datos básicos.
@@ -72,4 +63,15 @@ public class User {
     public void addTrip(TripHistory.Trip trip) {
         tripHistory.addTrip(trip);
     }
+
+    @Override
+    public String getRole() {
+        return userType != null ? userType.toString() : "USER";
+    }
+
+    @Override
+    public boolean canAccessSystem() {
+        return isActive;
+    }
 }
+

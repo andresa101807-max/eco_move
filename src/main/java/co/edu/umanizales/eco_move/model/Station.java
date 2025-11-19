@@ -5,6 +5,7 @@ import co.edu.umanizales.eco_move.model.records.Coordinates;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import co.edu.umanizales.eco_move.model.enums.VehicleStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +52,20 @@ public class Station {
         return false;
     }
     
+    /**
+     * Helper de relación: agrega un vehículo validando su estado.
+     * Solo admite vehículos en estado AVAILABLE.
+     */
+    public boolean addVehicle(Vehicle vehicle) {
+        if (vehicle == null) {
+            return false;
+        }
+        if (vehicle.getStatus() != VehicleStatus.AVAILABLE) {
+            return false;
+        }
+        return addVehicle(vehicle.getId());
+    }
+    
     public boolean removeVehicle(String vehicleId) {
         if (vehicleIds.remove(vehicleId)) {
             availableSpots++;
@@ -67,3 +82,4 @@ public class Station {
         return (double) getOccupiedSpots() / capacity * 100;
     }
 }
+

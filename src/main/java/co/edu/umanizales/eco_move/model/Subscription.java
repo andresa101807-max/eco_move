@@ -68,7 +68,7 @@ public class Subscription {
     }
     
     public boolean isActive() {
-        return status == SubscriptionStatus.ACTIVE && LocalDate.now().isBefore(endDate);
+        return status == SubscriptionStatus.ACTIVE && !LocalDate.now().isAfter(endDate);
     }
     
     public void renew() {

@@ -38,6 +38,34 @@ public class Incident {
         this.reportedAt = LocalDateTime.now();
     }
     
+    /**
+     * Enlaza una reserva al incidente validando consistencia con userId y vehicleId.
+     */
+    public boolean attachReservation(Reservation reservation) {
+        if (reservation == null) {
+            return false;
+        }
+        // Si el incidente ya tiene user/vehicle seteados, deben coincidir.
+        if (this.userId != null && reservation.getUserId() != null && !this.userId.equals(reservation.getUserId())) {
+            return false;
+        }
+        if (this.vehicleId != null && reservation.getVehicleId() != null && !this.vehicleId.equals(reservation.getVehicleId())) {
+            return false;
+        }
+        this.reservationId = reservation.getId();
+        if (this.userId == null) this.userId = reservation.getUserId();
+        if (this.vehicleId == null) this.vehicleId = reservation.getVehicleId();
+        return true;
+    }
+    
+    /**
+     * Variante que enlaza usuario y vehículo explícitamente.
+     */
+    public void linkUserAndVehicle(User user, Vehicle vehicle) {
+        if (user != null) this.userId = user.getId();
+        if (vehicle != null) this.vehicleId = vehicle.getId();
+    }
+    
     public void assignToTechnician(String technicianId) {
         this.resolvedBy = technicianId;
         this.status = IncidentStatus.IN_PROGRESS;
