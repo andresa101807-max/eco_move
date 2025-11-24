@@ -9,6 +9,7 @@ import co.edu.umanizales.eco_move.service.VehicleService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
@@ -19,6 +20,7 @@ public class EcoMoveApplication {
     }
 
     @Bean
+    @ConditionalOnProperty(name = "app.seed.enabled", havingValue = "true")
     CommandLineRunner seedData(UserService userService, VehicleService vehicleService, RouteService routeService) {
         return args -> {
             // Seed a default user if none exists
